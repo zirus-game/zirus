@@ -1,8 +1,8 @@
-import Image from "next/image";
+import { ElementClass } from "@/lib/types/";
 import Link from "next/link";
 
 export default function Home() {
-	const buttonClasses =
+	const buttonClasses: ElementClass =
 		"p-8 border-2 border-gray-600 bg-blue-500 text-2xl text-black rounded-4xl hover:shadow-lg hover:shadow-blue-900 hover:-translate-y-1 transition-all duration-500";
 	return (
 		<main>

@@ -48,4 +48,24 @@
 		text-decoration: underline;
 		color: lightblue;
 	}
+	input:not([type="submit"]) {
+		border-radius: 10px;
+		border: 1px solid grey;
+		padding: 5px;
+		margin: 5px 0 5px 0;
+	}
+	button,
+	input[type="submit"] {
+		color: black;
+		background-color: rgb(80, 128, 173);
+		border-radius: 10px;
+		padding: 5px;
+		font-weight: bold;
+		transition-duration: 200ms;
+	}
+	button:hover,
+	input[type="submit"]:hover {
+		transform: translateY(-2px);
+		background-color: rgb(52, 92, 167);
+	}
 }
