@@ -3,19 +3,19 @@ import { DM_Sans, Inter, Orbitron } from "next/font/google";
 export const orbitron = Orbitron({
 	subsets: ["latin"],
 	weight: "variable",
-	variable: "--font-orbitron",
+	variable: "--font-display",
 });
 
 export const dmSans = DM_Sans({
 	subsets: ["latin"],
 	weight: "variable",
-	variable: "--font-dm-sans",
+	variable: "--font-body",
 });
 
 export const inter = Inter({
 	subsets: ["latin"],
 	weight: "variable",
-	variable: "--font-inter",
+	variable: "--font-fallback",
 });
 
 const fonts = {

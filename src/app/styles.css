@@ -1,0 +1,51 @@
+@layer base {
+	:root {
+		--background: #0a0a0a;
+		--foreground: #ededed;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		:root {
+			--background: #0a0a0a;
+			--foreground: #ededed;
+		}
+	}
+
+	body {
+		background-color: var(--background);
+		color: var(--foreground);
+	}
+	h1 {
+		font-size: 50px;
+		font-family: var(--font-display), serif;
+		margin-bottom: 20px;
+	}
+	h2 {
+		font-size: 30px;
+		font-family: var(--font-display), sans-serif;
+	}
+	h3 {
+		font-size: 24px;
+		font-family: var(--font-body), sans-serif;
+	}
+	h4 {
+		font-size: 20px;
+		font-family: var(--font-body), sans-serif;
+	}
+	h5 {
+		font-size: 18px;
+		font-family: var(--font-body), sans-serif;
+	}
+	h6 {
+		font-size: 16px;
+		font-family: var(--font-body), sans-serif;
+	}
+	a {
+		text-decoration: none;
+		transition-duration: 250ms;
+	}
+	a:hover {
+		text-decoration: underline;
+		color: lightblue;
+	}
+}
