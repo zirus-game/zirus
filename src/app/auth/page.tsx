@@ -1,3 +1,5 @@
+import signin from "@/actions/auth/signin";
+import signup from "@/actions/auth/signup";
 import { ElementClass } from "@/lib/types";
 import AuthForm from "../../ui/components/auth/form";
 import Link from "next/link";
@@ -13,20 +15,11 @@ export default function AuthPage() {
 			<main className="flex gap-20 justify-center items-start w-full flex-wrap">
 				<section className={sectionClass}>
 					<h2 className={sectionHeadingClass}>Log In</h2>
-					<AuthForm
-						act={async () => {
-							"use server";
-						}}
-						login
-					/>
+					<AuthForm act={signin} login />
 				</section>
 				<section className={sectionClass}>
 					<h2 className={sectionHeadingClass}>Sign Up</h2>
-					<AuthForm
-						act={async () => {
-							"use server";
-						}}
-					/>
+					<AuthForm act={signup} />
 				</section>
 			</main>
 			<Link

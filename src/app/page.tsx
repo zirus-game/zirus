@@ -18,7 +18,7 @@ export default function Home() {
 				Under active development from March 2026.
 			</p>
 			<div className="flex flex-col gap-2 mt-4">
-				<span className="flex gap-2 items-baseline">
+				<span className="flex gap-2 items-baseline flex-wrap">
 					<Link
 						href="https://github.com/JeffreyJYZ/zirus"
 						target="_blank"
@@ -42,7 +42,7 @@ export default function Home() {
 					For any questions or suggestions!
 				</span>
 			</div>
-			<section className="mt-10 flex gap-5">
+			<section className="mt-10 flex gap-5 flex-wrap">
 				<Link href={"/auth"} className={buttonClasses}>
 					Login/Sign Up
 				</Link>

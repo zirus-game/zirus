@@ -1,5 +1,6 @@
 "use client";
 
+import checkUsername from "@/lib/funcs";
 import { ChangeEvent, useActionState, useState } from "react";
 import { useDebounce } from "use-debounce";
 import z from "zod";
@@ -26,17 +27,11 @@ export default function AuthForm({
 	);
 
 	const [handleUsernameChange] = useDebounce(
-		(e: { currentTarget: { value: string } }) => {
+		async (e: { currentTarget: { value: string } }) => {
 			const value = e.currentTarget.value.toLowerCase();
-			const existingUsernames: string[] = ["jeffreyjyz"]; // TODO: add real data fetching in
 			if (value) {
-				setUsernameState(
-					value.length > 3
-						? existingUsernames.includes(value)
-							? "This username is already taken"
-							: null
-						: "Username min 3 characters",
-				);
+				const result = await checkUsername(value);
+				setUsernameState(result.error);
 			} else {
 				setUsernameState("Username is required");
 			}
@@ -65,7 +60,6 @@ export default function AuthForm({
 			const passwordValue = (
 				e.currentTarget.form as HTMLFormElement
 			).password.value.toLowerCase();
-			console.log({ value, passwordValue });
 
 			if (value) {
 				setConfirmPasswordState(
@@ -98,15 +92,16 @@ export default function AuthForm({
 		<form action={action} className="flex flex-col gap-2">
 			<input
 				name="username"
-				type="username"
+				type="text"
 				placeholder="Username*"
-				onChange={handleUsernameChange}
+				onChange={!login ? handleUsernameChange : undefined}
 				required
 				className={
 					usernameState === null
 						? "border-green-200"
 						: usernameState && "border-red-300"
 				}
+				disabled={pending}
 			/>
 			{usernameState && (
 				<p className="text-red-500 text-xs">{usernameState}</p>
@@ -123,6 +118,7 @@ export default function AuthForm({
 								? "border-green-200"
 								: emailState && "border-red-300"
 						}
+						disabled={pending}
 					/>
 					{emailState && (
 						<p className="text-red-500 text-xs">{emailState}</p>
@@ -133,12 +129,13 @@ export default function AuthForm({
 				name="password"
 				type="password"
 				placeholder="Password*"
-				onChange={handlePasswordChange}
+				onChange={!login ? handlePasswordChange : undefined}
 				className={
 					passwordState === null
 						? "border-green-200"
 						: passwordState && "border-red-300"
 				}
+				disabled={pending}
 				required
 			/>
 			{passwordState && (
@@ -147,7 +144,7 @@ export default function AuthForm({
 			{!login && (
 				<>
 					<input
-						name="confirm-password"
+						name="confirmPassword"
 						type="password"
 						placeholder="Confirm Password*"
 						onChange={handleConfirmPasswordChange}
@@ -156,6 +153,7 @@ export default function AuthForm({
 								? "border-green-200"
 								: confirmPasswordState && "border-red-300"
 						}
+						disabled={pending}
 						required
 					/>
 					{confirmPasswordState && (
@@ -169,7 +167,14 @@ export default function AuthForm({
 				{login ? "Log In" : "Sign Up"}
 			</button>
 			<p>* required</p>
-			{!!state && <p>{state.message}</p>}
+			{!!state &&
+				(!state.success ? (
+					<p className="text-red-500 text-xs">
+						{Object.values(state.errors).join("\n")}
+					</p>
+				) : (
+					<p className="text-green-500 text-xs">success!</p>
+				))}
 		</form>
 	);
 }
