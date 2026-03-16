@@ -2,10 +2,11 @@ import "server-only";
 
 import { cookies } from "next/headers";
 import db from "@/db";
+import { SESSION_COOKIE_NAME } from "@/lib/constants";
 
 export async function hasValidToken() {
 	const cookieStore = await cookies();
-	const sessionToken = cookieStore.get("authSession")?.value;
+	const sessionToken = cookieStore.get(SESSION_COOKIE_NAME)?.value;
 	if (!sessionToken) {
 		return false;
 	}

@@ -4,11 +4,9 @@ import { eq } from "drizzle-orm";
 import db from "@/db";
 import { sessions } from "@/db/schemas";
 import { cookies } from "next/headers";
+import { SESSION_COOKIE_NAME, SESSION_TTL_MS } from "@/lib/constants";
 
-const SESSION_COOKIE_NAME = "authSession";
-const SESSION_TTL_MS = 7 * 24 * 60 * 60 * 1000;
-
-type SessionPayload = {
+export type SessionPayload = {
 	token: string;
 	userId: number;
 	expiresAt: string;
