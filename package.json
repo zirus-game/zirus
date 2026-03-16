@@ -11,10 +11,13 @@
 	},
 	"dependencies": {
 		"@neondatabase/serverless": "^1.0.2",
+		"@vercel/analytics": "^2.0.1",
+		"@vercel/speed-insights": "^2.0.0",
 		"bcryptjs": "^3.0.3",
 		"dotenv": "^17.3.1",
 		"drizzle-orm": "^0.45.1",
 		"next": "16.1.6",
+		"nextjs-toploader": "^3.9.17",
 		"pg": "^8.20.0",
 		"react": "19.2.3",
 		"react-dom": "19.2.3",
