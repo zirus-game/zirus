@@ -1,3 +1,5 @@
+import "server-only";
+
 import db from "@/db";
 import { sessions } from "@/db/schemas";
 import { cookies } from "next/headers";

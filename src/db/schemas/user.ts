@@ -11,7 +11,6 @@ export const users = pgTable("users", {
 	createdAt: text("created_at")
 		.default(sql`CURRENT_TIMESTAMP`)
 		.notNull(),
-	verified: boolean("verified").default(false).notNull(),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({

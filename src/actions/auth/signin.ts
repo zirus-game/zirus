@@ -3,12 +3,12 @@
 import { eq } from "drizzle-orm";
 import db from "@/db";
 import { users } from "@/db/schemas/user";
-import { createSession } from "../../lib/funcs/auth/cookies";
+import { createSession } from "@/lib/funcs/auth/cookies";
 import {
 	hashPassword,
 	isPasswordHashed,
 	verifyPassword,
-} from "../../lib/funcs";
+} from "../../lib/funcs/auth/password";
 
 export default async function signin(prevState: any, payload: FormData) {
 	const username = payload.get("username");

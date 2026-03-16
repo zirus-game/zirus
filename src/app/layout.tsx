@@ -4,7 +4,7 @@ import fonts from "@/ui/fonts";
 
 export const metadata: Metadata = {
 	title: "Zirus",
-	description: "Under active development",
+	description: "Infect. Solve. Conquer.",
 };
 
 export default function RootLayout({

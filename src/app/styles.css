@@ -41,6 +41,7 @@
 	a {
 		text-decoration: none;
 		transition-duration: 250ms;
+		color: rgb(229, 248, 255);
 	}
 	a:hover {
 		text-decoration: underline;

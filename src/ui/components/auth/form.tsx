@@ -1,6 +1,6 @@
 "use client";
 
-import checkUsername from "@/lib/funcs";
+import checkUsername from "@/lib/funcs/auth/check-username";
 import { ChangeEvent, useActionState, useState } from "react";
 import { useDebounce } from "use-debounce";
 import z from "zod";
@@ -164,7 +164,13 @@ export default function AuthForm({
 				</>
 			)}
 			<button type="submit" disabled={pending} className="display">
-				{login ? "Log In" : "Sign Up"}
+				{login
+					? pending
+						? "Logging In..."
+						: "Log In"
+					: pending
+						? "Signing Up..."
+						: "Sign Up"}
 			</button>
 			<p>* required</p>
 			{!!state &&
