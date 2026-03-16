@@ -4,6 +4,7 @@ import db from "@/db";
 import { users } from "@/db/schemas/user";
 import { hashPassword } from "../../lib/funcs/auth/password";
 import z from "zod";
+import { redirect } from "next/navigation";
 
 export default async function signup(prevState: any, payload: FormData) {
 	const username = payload.get("username");
@@ -50,11 +51,5 @@ export default async function signup(prevState: any, payload: FormData) {
 
 	await db.insert(users).values(object);
 
-	return {
-		success: true,
-		data: {
-			username: normalizedUsername,
-		},
-		message: "Account created successfully",
-	};
+	redirect("/main");
 }

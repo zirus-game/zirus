@@ -3,10 +3,13 @@ import signup from "@/actions/auth/signup";
 import { ElementClass } from "@/lib/types";
 import AuthForm from "../../ui/components/auth/form";
 import Link from "next/link";
+import { hasValidToken } from "@/lib/funcs/auth/session";
+import { redirect } from "next/navigation";
 
-export default function AuthPage() {
+export default async function AuthPage() {
 	const sectionClass: ElementClass = "";
 	const sectionHeadingClass: ElementClass = "justify-self-center";
+	if (await hasValidToken()) redirect("/main");
 
 	return (
 		<main className="flex flex-col items-center">

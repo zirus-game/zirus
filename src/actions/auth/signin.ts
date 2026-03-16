@@ -9,6 +9,7 @@ import {
 	isPasswordHashed,
 	verifyPassword,
 } from "../../lib/funcs/auth/password";
+import { redirect } from "next/navigation";
 
 export default async function signin(prevState: any, payload: FormData) {
 	const username = payload.get("username");
@@ -55,14 +56,5 @@ export default async function signin(prevState: any, payload: FormData) {
 		username: user.username,
 	});
 
-	return {
-		success: true,
-		data: {
-			id: user.id,
-			username: user.username,
-			sessionToken: session.token,
-			expiresAt: session.expiresAt,
-		},
-		message: "Signed in successfully",
-	};
+	redirect("/main");
 }
