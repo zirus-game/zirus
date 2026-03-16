@@ -3,15 +3,13 @@
 import { eq } from "drizzle-orm";
 import db from "@/db";
 import { users } from "@/db/schemas/user";
-import { createSession } from "@/lib/funcs/auth/cookies";
+import { ensureSession } from "@/lib/funcs/auth/cookies";
 import {
 	hashPassword,
 	isPasswordHashed,
 	verifyPassword,
 } from "../../lib/funcs/auth/password";
 import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
-import { SESSION_COOKIE_NAME } from "@/lib/constants";
 
 export default async function signin(prevState: any, payload: FormData) {
 	const username = payload.get("username");
@@ -53,16 +51,9 @@ export default async function signin(prevState: any, payload: FormData) {
 			.where(eq(users.id, user.id));
 	}
 
-	const session = await createSession({
+	await ensureSession({
 		id: user.id,
 		username: user.username,
-	});
-
-	const cookieStore = await cookies();
-	cookieStore.set(SESSION_COOKIE_NAME, session.token, {
-		httpOnly: true,
-		sameSite: "lax",
-		secure: process.env.NODE_ENV === "production",
 	});
 
 	redirect("/main");

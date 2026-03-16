@@ -1,6 +1,6 @@
 import "server-only";
 
-import { eq } from "drizzle-orm";
+import { and, eq, gt } from "drizzle-orm";
 import db from "@/db";
 import { sessions } from "@/db/schemas";
 import { cookies } from "next/headers";
@@ -35,6 +35,36 @@ export async function createSession(user: { id: number; username: string }) {
 	await setAuthCookie(payload, expires);
 
 	return payload;
+}
+
+export async function ensureSession(user: { id: number; username: string }) {
+	const cookieStore = await cookies();
+	const sessionToken = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+
+	if (sessionToken) {
+		const existingSession = await db.query.sessions.findFirst({
+			where: (table, { and, eq, gt }) =>
+				and(
+					eq(table.token, sessionToken),
+					eq(table.userId, user.id),
+					gt(table.expires, new Date()),
+				),
+		});
+
+		if (existingSession) {
+			const payload: SessionPayload = {
+				token: existingSession.token,
+				userId: existingSession.userId,
+				expiresAt: existingSession.expires.toISOString(),
+			};
+
+			await setAuthCookie(payload, existingSession.expires);
+
+			return payload;
+		}
+	}
+
+	return createSession(user);
 }
 
 export async function setAuthCookie(

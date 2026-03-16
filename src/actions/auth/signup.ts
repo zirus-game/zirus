@@ -2,6 +2,7 @@
 
 import db from "@/db";
 import { users } from "@/db/schemas/user";
+import { ensureSession } from "@/lib/funcs/auth/cookies";
 import { hashPassword } from "../../lib/funcs/auth/password";
 import z from "zod";
 import { redirect } from "next/navigation";
@@ -49,7 +50,12 @@ export default async function signup(prevState: any, payload: FormData) {
 		password: await hashPassword(password as string),
 	};
 
-	await db.insert(users).values(object);
+	const [newUser] = await db.insert(users).values(object).returning({
+		id: users.id,
+		username: users.username,
+	});
+
+	await ensureSession(newUser);
 
 	redirect("/main");
 }

@@ -31,8 +31,7 @@ export default async function AuthPage() {
 					<AuthForm act={signup} />
 				</section>
 			</main>
-			<hr className="border border-white w-25 mt-10" />
-			<Link href="/" className="mt-2">
+			<Link href="/" className="mt-10">
 				Home
 			</Link>
 		</main>

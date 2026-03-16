@@ -1,9 +1,55 @@
 "use client";
 
 import checkUsername from "@/lib/funcs/auth/check-username";
-import { ChangeEvent, useActionState, useState } from "react";
+import { ChangeEvent, useActionState, useRef, useState } from "react";
 import { useDebounce } from "use-debounce";
 import z from "zod";
+
+function getUsernameError(username: string) {
+	const normalizedUsername = username.trim().toLowerCase();
+
+	if (!normalizedUsername) {
+		return "Username is required";
+	}
+
+	if (normalizedUsername.length < 3) {
+		return "Username min 3 characters";
+	}
+
+	return null;
+}
+
+function getPasswordError(password: string) {
+	if (!password) {
+		return "Password is required";
+	}
+
+	if (password.length < 6) {
+		return "Password min 6 characters";
+	}
+
+	return null;
+}
+
+function getConfirmPasswordError(password: string, confirmPassword: string) {
+	if (!confirmPassword) {
+		return "Confirm Password is required";
+	}
+
+	if (confirmPassword !== password) {
+		return "Passwords do not match";
+	}
+
+	return null;
+}
+
+function getEmailError(email: string) {
+	if (!email) {
+		return undefined;
+	}
+
+	return z.email().safeParse(email).success ? null : "Invalid email format";
+}
 
 export default function AuthForm({
 	act,
@@ -13,6 +59,10 @@ export default function AuthForm({
 	login?: boolean;
 }) {
 	const [state, action, pending] = useActionState(act, null);
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
+	const [confirmPassword, setConfirmPassword] = useState("");
+	const [email, setEmail] = useState("");
 	const [usernameState, setUsernameState] = useState<
 		string | null | undefined
 	>(undefined);
@@ -25,68 +75,65 @@ export default function AuthForm({
 	const [emailState, setEmailState] = useState<string | null | undefined>(
 		undefined,
 	);
+	const [usernamePending, setUsernamePending] = useState(false);
+	const latestUsername = useRef("");
 
-	const [handleUsernameChange] = useDebounce(
-		async (e: { currentTarget: { value: string } }) => {
-			const value = e.currentTarget.value.toLowerCase();
-			if (value) {
-				const result = await checkUsername(value);
-				setUsernameState(result.error);
-			} else {
-				setUsernameState("Username is required");
-			}
-		},
-		300,
-	);
+	const [handleUsernameChange] = useDebounce(async (value: string) => {
+		const normalizedValue = value.trim().toLowerCase();
+		const usernameError = getUsernameError(normalizedValue);
+
+		if (login || usernameError) {
+			setUsernamePending(false);
+			setUsernameState(usernameError);
+			return;
+		}
+
+		latestUsername.current = normalizedValue;
+		setUsernamePending(true);
+
+		const result = await checkUsername(normalizedValue);
+
+		if (latestUsername.current === normalizedValue) {
+			setUsernameState(result.error);
+			setUsernamePending(false);
+		}
+	}, 300);
 
 	const [handlePasswordChange] = useDebounce(
-		(e: { currentTarget: { value: string } }) => {
-			const value = e.currentTarget.value.toLowerCase();
+		(value: string, confirmPasswordValue?: string) => {
+			setPasswordState(getPasswordError(value));
 
-			if (value) {
-				setPasswordState(
-					value.length < 6 ? "Password min 6 characters" : null,
+			if (!login && typeof confirmPasswordValue === "string") {
+				setConfirmPasswordState(
+					getConfirmPasswordError(value, confirmPasswordValue),
 				);
-			} else {
-				setPasswordState("Password is required");
 			}
 		},
 		300,
 	);
 
 	const [handleConfirmPasswordChange] = useDebounce(
-		(e: ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
-			const value = e.currentTarget.value.toLowerCase();
-			const passwordValue = (
-				e.currentTarget.form as HTMLFormElement
-			).password.value.toLowerCase();
-
-			if (value) {
-				setConfirmPasswordState(
-					value !== passwordValue ? "Passwords do not match" : null,
-				);
-			} else {
-				setConfirmPasswordState("Confirm Password is required");
-			}
+		(passwordValue: string, confirmPasswordValue: string) => {
+			setConfirmPasswordState(
+				getConfirmPasswordError(passwordValue, confirmPasswordValue),
+			);
 		},
 		300,
 	);
 
-	const [handleEmailChange] = useDebounce(
-		(e: ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
-			const value = e.currentTarget.value.toLowerCase();
-			if (value) {
-				setEmailState(
-					z.email().safeParse(value).success
-						? null
-						: "Invalid email format",
-				);
-			} else {
-				setEmailState(undefined);
-			}
-		},
-		300,
-	);
+	const [handleEmailChange] = useDebounce((value: string) => {
+		setEmailState(getEmailError(value));
+	}, 300);
+
+	const isUsernameSatisfied = usernameState === null && !usernamePending;
+	const isPasswordSatisfied = passwordState === null;
+	const isEmailSatisfied = login || emailState !== "Invalid email format";
+	const isConfirmPasswordSatisfied = login || confirmPasswordState === null;
+	const canSubmit =
+		isUsernameSatisfied &&
+		isPasswordSatisfied &&
+		isEmailSatisfied &&
+		isConfirmPasswordSatisfied;
 
 	return (
 		<form action={action} className="flex flex-col gap-2">
@@ -94,7 +141,24 @@ export default function AuthForm({
 				name="username"
 				type="text"
 				placeholder="Username*"
-				onChange={!login ? handleUsernameChange : undefined}
+				onChange={(e) => {
+					const value = e.currentTarget.value;
+					setUsername(value);
+					if (!value.trim()) {
+						setUsernamePending(false);
+						setUsernameState(getUsernameError(value));
+						return;
+					}
+
+					if (login) {
+						setUsernamePending(false);
+						setUsernameState(getUsernameError(value));
+						return;
+					}
+
+					setUsernameState(undefined);
+					handleUsernameChange(value);
+				}}
 				required
 				className={
 					usernameState === null
@@ -112,7 +176,11 @@ export default function AuthForm({
 						name="email"
 						type="email"
 						placeholder="Email (Optional)"
-						onChange={handleEmailChange}
+						onChange={(e) => {
+							const value = e.currentTarget.value.toLowerCase();
+							setEmail(value);
+							handleEmailChange(value);
+						}}
 						className={
 							emailState === null
 								? "border-green-200"
@@ -129,7 +197,11 @@ export default function AuthForm({
 				name="password"
 				type="password"
 				placeholder="Password*"
-				onChange={!login ? handlePasswordChange : undefined}
+				onChange={(e) => {
+					const value = e.currentTarget.value;
+					setPassword(value);
+					handlePasswordChange(value, confirmPassword);
+				}}
 				className={
 					passwordState === null
 						? "border-green-200"
@@ -147,7 +219,11 @@ export default function AuthForm({
 						name="confirmPassword"
 						type="password"
 						placeholder="Confirm Password*"
-						onChange={handleConfirmPasswordChange}
+						onChange={(e) => {
+							const value = e.currentTarget.value;
+							setConfirmPassword(value);
+							handleConfirmPasswordChange(password, value);
+						}}
 						className={
 							confirmPasswordState === null
 								? "border-green-200"
@@ -163,7 +239,11 @@ export default function AuthForm({
 					)}
 				</>
 			)}
-			<button type="submit" disabled={pending} className="display">
+			<button
+				type="submit"
+				disabled={pending || !canSubmit}
+				className="display"
+			>
 				{login
 					? pending
 						? "Logging In..."
