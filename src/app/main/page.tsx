@@ -10,7 +10,6 @@ export const metadata = {
 export default async function MainPage() {
 	const tokenValid = await hasValidToken();
 	if (!tokenValid) unauthorized();
-	("COMMENT OUT!!");
 	const actionBtnsClasses = "p-10 text-2xl rounded-4xl";
 	return (
 		<main>
