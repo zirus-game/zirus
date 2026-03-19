@@ -11,7 +11,10 @@ export default function UnauthorizedPage() {
 		<main className="justify-center p-10">
 			<h1 className="justify-self-center">Unauthorized</h1>
 			<main className="justify-self-center text-lg">
-				<p className="mb-5">You are not authorized to view this page</p>
+				<p>You are not authorized to view this page</p>
+				<p className="mb-5">
+					Did you login? Or do you have an active game?
+				</p>
 				<Link href="/">Go back to home</Link>
 				<br />
 				or

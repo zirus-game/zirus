@@ -1,9 +1,8 @@
 import logout from "@/actions/auth/logout";
-import {
-	hasTokenOrUnauthorized,
-	hasValidToken,
-} from "@/lib/funcs/auth/session";
-import { redirect, unauthorized } from "next/navigation";
+import db from "@/db";
+import { hasTokenOrUnauthorized } from "@/lib/funcs/auth/session";
+import getCurrentUser from "@/lib/funcs/auth/user";
+import getCurrentGame from "@/lib/funcs/game/getGame";
 import HomeButtons from "../../ui/components/home/buttons";
 
 export const metadata = {
@@ -13,26 +12,49 @@ export const metadata = {
 
 export default async function MainPage() {
 	await hasTokenOrUnauthorized();
+	const user = await getCurrentUser();
+	if (!user) {
+		return null;
+	}
+	const [savedGame, currentGame] = await Promise.all([
+		db.query.games.findFirst({
+			where: (games, { eq }) => eq(games.userId, user.id),
+			columns: { id: true },
+		}),
+		getCurrentGame(),
+	]);
+	const hasSavedGames = Boolean(savedGame);
+	const hasCurrentGame = Boolean(currentGame);
 	return (
-		<main>
-			<span className="flex justify-center items-center gap-10">
+		<main className="px-6 py-8">
+			<span className="flex flex-wrap justify-center items-center gap-6">
 				<h1 className="justify-self-center">Main Page</h1>
 				<form action={logout}>
 					<button
-						className="text-xl p-3 bg-red-400 hover:bg-red-500"
+						className="body text-xl p-3 bg-red-400 hover:bg-red-500"
 						type="submit"
 					>
 						Logout
 					</button>
 				</form>
 			</span>
-			<hr />
-			<main className="flex flex-col items-center">
-				<h2 className="body text-2xl p-3 border border-gray-600/50 w-fit rounded-b-2xl">
-					Welcome to your Home Page!
-				</h2>
-				<HomeButtons />
-			</main>
+			<hr className="mt-8 border-white" />
+			<h2 className="body w-fit rounded-b-2xl border border-gray-600/50 px-4 py-3 text-2xl justify-self-center mb-7">
+				Welcome to your Home Page!
+			</h2>
+			<p className="justify-self-center body max-w-2xl text-center text-lg text-blue-100/85">
+				Create a fresh run, reopen one of your saved games, or jump back
+				into the active game you already have in progress.
+			</p>
+			{!hasSavedGames && !hasCurrentGame && (
+				<p className="body rounded-2xl border border-blue-500/30 bg-blue-500/10 px-4 py-3 text-center text-sm text-blue-100/85 max-w-fit justify-self-center mt-5">
+					You do not have any saved games yet. Start with a new game.
+				</p>
+			)}
+			<HomeButtons
+				hasSavedGames={hasSavedGames}
+				hasCurrentGame={hasCurrentGame}
+			/>
 		</main>
 	);
 }

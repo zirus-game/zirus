@@ -1,9 +1,12 @@
 import { ElementClass } from "@/lib/types/";
 import Link from "next/link";
+import { hasValidToken } from "../lib/funcs/auth/session";
+import { redirect } from "next/navigation";
 
-export default function Home() {
+export default async function HomePage() {
 	const buttonClasses: ElementClass =
 		"p-8 border-2 border-gray-600 bg-blue-500 text-2xl text-black rounded-4xl hover:shadow-lg hover:shadow-blue-900 hover:-translate-y-1 transition-all duration-500";
+	if (await hasValidToken()) redirect("/main");
 	return (
 		<main>
 			<h1 className="text-4xl font-bold text-blue-100">
