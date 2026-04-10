@@ -1,0 +1,4 @@
+drizzle/
+!.env
+!.next-env.d.ts
+public/

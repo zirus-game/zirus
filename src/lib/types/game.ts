@@ -1,3 +1,3 @@
 export interface GameStateType {
-	[key: string]: unknown;
+    [key: string]: unknown;
 }

@@ -1,15 +1,24 @@
+import { hasValidToken } from "@/lib/funcs/auth/session";
 import NavBar from "../../ui/components/not-game/nav";
-export default function HomeLayout({
-	children,
+import getCurrentGame from "@/lib/funcs/game/getGame";
+export default async function HomeLayout({
+    children,
 }: {
-	children: React.ReactNode;
+    children: React.ReactNode;
 }) {
-	return (
-		<main className="flex md:flex-row flex-col gap-10 h-full">
-			<NavBar />
-			<main className="mt-50 md:ml-65 md:mt-10 justify-center items-center flex flex-col text-center">
-				{children}
-			</main>
-		</main>
-	);
+    return (
+        <div className="mx-auto flex min-h-[calc(100vh-5rem)] w-full max-w-7xl flex-col gap-8 md:grid md:grid-cols-[10rem_minmax(0,1fr)] md:items-start">
+            <aside className="md:sticky md:top-10">
+                <NavBar
+                    isLoggedIn={await hasValidToken()}
+                    hasCurrentGame={Boolean(await getCurrentGame())}
+                />
+            </aside>
+            <main className="flex min-w-0 items-center justify-center text-center">
+                <div className="flex w-full max-w-4xl flex-col items-center justify-center">
+                    {children}
+                </div>
+            </main>
+        </div>
+    );
 }

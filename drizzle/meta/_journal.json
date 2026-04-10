@@ -1,69 +1,69 @@
 {
-  "version": "7",
-  "dialect": "postgresql",
-  "entries": [
-    {
-      "idx": 0,
-      "version": "7",
-      "when": 1773538622687,
-      "tag": "0000_lethal_jackal",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1773539223279,
-      "tag": "0001_nasty_night_nurse",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1773541001237,
-      "tag": "0002_closed_invisible_woman",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1773553204516,
-      "tag": "0003_aromatic_living_tribunal",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1773754318668,
-      "tag": "0004_windy_gravity",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1773754928462,
-      "tag": "0005_optimal_synch",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1773755442506,
-      "tag": "0006_burly_ink",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "7",
-      "when": 1773881663843,
-      "tag": "0007_famous_dust",
-      "breakpoints": true
-    },
-    {
-      "idx": 8,
-      "version": "7",
-      "when": 1773969302492,
-      "tag": "0008_steady_fabian_cortez",
-      "breakpoints": true
-    }
-  ]
+    "version": "7",
+    "dialect": "postgresql",
+    "entries": [
+        {
+            "idx": 0,
+            "version": "7",
+            "when": 1773538622687,
+            "tag": "0000_lethal_jackal",
+            "breakpoints": true
+        },
+        {
+            "idx": 1,
+            "version": "7",
+            "when": 1773539223279,
+            "tag": "0001_nasty_night_nurse",
+            "breakpoints": true
+        },
+        {
+            "idx": 2,
+            "version": "7",
+            "when": 1773541001237,
+            "tag": "0002_closed_invisible_woman",
+            "breakpoints": true
+        },
+        {
+            "idx": 3,
+            "version": "7",
+            "when": 1773553204516,
+            "tag": "0003_aromatic_living_tribunal",
+            "breakpoints": true
+        },
+        {
+            "idx": 4,
+            "version": "7",
+            "when": 1773754318668,
+            "tag": "0004_windy_gravity",
+            "breakpoints": true
+        },
+        {
+            "idx": 5,
+            "version": "7",
+            "when": 1773754928462,
+            "tag": "0005_optimal_synch",
+            "breakpoints": true
+        },
+        {
+            "idx": 6,
+            "version": "7",
+            "when": 1773755442506,
+            "tag": "0006_burly_ink",
+            "breakpoints": true
+        },
+        {
+            "idx": 7,
+            "version": "7",
+            "when": 1773881663843,
+            "tag": "0007_famous_dust",
+            "breakpoints": true
+        },
+        {
+            "idx": 8,
+            "version": "7",
+            "when": 1773969302492,
+            "tag": "0008_steady_fabian_cortez",
+            "breakpoints": true
+        }
+    ]
 }
