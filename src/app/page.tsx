@@ -23,7 +23,7 @@ export default async function HomePage() {
 			<div className="flex flex-col gap-2 mt-4">
 				<span className="flex gap-2 items-baseline flex-wrap">
 					<Link
-						href="https://github.com/JeffreyJYZ/zirus"
+						href="https://github.com/zirus-game/zirus"
 						target="_blank"
 						className="text-blue-500 hover:underline text-2xl"
 					>
@@ -37,10 +37,10 @@ export default async function HomePage() {
 				<span>
 					Email me at{" "}
 					<Link
-						href="mailto:yizhoujiang11@gmail.com"
+						href="mailto:zirus.game@gmail.com"
 						className="text-blue-500 hover:underline"
 					>
-						yizhoujiang11@gmail.com
+						zirus.game@gmail.com
 					</Link>{" "}
 					For any questions or suggestions!
 				</span>
