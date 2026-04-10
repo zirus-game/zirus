@@ -19,6 +19,7 @@ export default function RootLayout({
 		<html lang="en" suppressHydrationWarning>
 			<body
 				className={`${fonts.text.variable} ${fonts.display.variable} ${fonts.fallback.variable} ${fonts.text.className} antialiased justify-center p-10`}
+				suppressHydrationWarning
 			>
 				<NextTopLoader
 					color="lightblue"

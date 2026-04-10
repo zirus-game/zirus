@@ -1,7 +1,7 @@
 import signin from "@/actions/auth/signin";
 import signup from "@/actions/auth/signup";
 import { ElementClass } from "@/lib/types";
-import AuthForm from "../../ui/components/auth/form";
+import AuthForm from "@/ui/components/auth/form";
 import Link from "next/link";
 import { hasValidToken } from "@/lib/funcs/auth/session";
 import { redirect } from "next/navigation";

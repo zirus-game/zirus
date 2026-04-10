@@ -1,6 +1,6 @@
 import { ElementClass } from "@/lib/types/";
 import Link from "next/link";
-import { hasValidToken } from "../lib/funcs/auth/session";
+import { hasValidToken } from "../../lib/funcs/auth/session";
 import { redirect } from "next/navigation";
 
 export default async function HomePage() {
@@ -8,7 +8,7 @@ export default async function HomePage() {
 		"p-8 border-2 border-gray-600 bg-blue-500 text-2xl text-black rounded-4xl hover:shadow-lg hover:shadow-blue-900 hover:-translate-y-1 transition-all duration-500";
 	if (await hasValidToken()) redirect("/main");
 	return (
-		<main>
+		<>
 			<h1 className="text-4xl font-bold text-blue-100">
 				Welcome to Zirus!
 			</h1>
@@ -52,7 +52,13 @@ export default async function HomePage() {
 				<Link href={"https://dev.zirus.io"} className={buttonClasses}>
 					Developer Page
 				</Link>
+				<Link
+					href={"https://journey.zirus.io"}
+					className={buttonClasses}
+				>
+					Journey Page
+				</Link>
 			</section>
-		</main>
+		</>
 	);
 }
