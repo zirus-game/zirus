@@ -51,7 +51,11 @@ export default function NavBar({
             </ul>
             <span className="flex items-center gap-4">
                 <i>Zirus v1.0.0</i>
-                <Link href="https://github.com/zirus-game/zirus">
+                <Link
+                    href="https://github.com/zirus-game/zirus"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
                     <Image
                         src="/github-logo-black.png"
                         alt="GitHub Logo"

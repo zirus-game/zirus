@@ -23,18 +23,24 @@ export default async function HomePage() {
                         <Link
                             href={"https://dev.zirus.io"}
                             className={buttonClasses}
+                            target="_blank"
+                            rel="noopener noreferrer"
                         >
                             Developer Page
                         </Link>
                         <Link
                             href={"https://journey.zirus.io"}
                             className={buttonClasses}
+                            target="_blank"
+                            rel="noopener noreferrer"
                         >
                             Journey Page
                         </Link>
                         <Link
                             href={"https://github.com/zirus-game/zirus"}
                             className={buttonClasses}
+                            target="_blank"
+                            rel="noopener noreferrer"
                         >
                             GitHub
                         </Link>
