@@ -20,3 +20,5 @@ export const usersRelations = relations(users, ({ many, one }) => ({
         references: [games.id],
     }),
 }));
+
+export type UserType = typeof users.$inferSelect;

@@ -10,6 +10,7 @@ import {
     verifyPassword,
 } from "../../lib/funcs/auth/password";
 import { redirect } from "next/navigation";
+import { getUserByUsername, updateUserById } from "@/lib/funcs/auth/user";
 
 export default async function signin(prevState: any, payload: FormData) {
     const username = payload.get("username");
@@ -29,9 +30,7 @@ export default async function signin(prevState: any, payload: FormData) {
     }
 
     const normalizedUsername = (username as string).trim().toLowerCase();
-    const user = await db.query.users.findFirst({
-        where: (users, { eq }) => eq(users.username, normalizedUsername),
-    });
+    const user = await getUserByUsername(normalizedUsername);
 
     if (!user || !(await verifyPassword(user.password, password as string))) {
         return {
@@ -43,12 +42,9 @@ export default async function signin(prevState: any, payload: FormData) {
     }
 
     if (!isPasswordHashed(user.password)) {
-        await db
-            .update(users)
-            .set({
-                password: await hashPassword(password as string),
-            })
-            .where(eq(users.id, user.id));
+        await updateUserById(user.id, {
+            password: await hashPassword(user.password),
+        });
     }
 
     await ensureSession({

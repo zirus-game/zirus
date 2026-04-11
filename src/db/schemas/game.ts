@@ -26,3 +26,5 @@ export const games = pgTable(
         unique("games_user_id_name_unique").on(table.userId, table.name),
     ],
 );
+
+export type GameType = typeof games.$inferSelect;

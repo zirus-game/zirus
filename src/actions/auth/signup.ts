@@ -1,11 +1,12 @@
 "use server";
 
 import db from "@/db";
-import { users } from "@/db/schemas/user";
+import { users, UserType } from "@/db/schemas/user";
 import { ensureSession } from "@/lib/funcs/auth/cookies";
 import { hashPassword } from "../../lib/funcs/auth/password";
 import z from "zod";
 import { redirect } from "next/navigation";
+import { getUserByUsername } from "@/lib/funcs/auth/user";
 
 export default async function signup(prevState: any, payload: FormData) {
     const username = payload.get("username");
@@ -31,9 +32,7 @@ export default async function signup(prevState: any, payload: FormData) {
     }
 
     if (!errors.username) {
-        const existingUser = await db.query.users.findFirst({
-            where: (table, { eq }) => eq(table.username, normalizedUsername),
-        });
+        const existingUser = await getUserByUsername(normalizedUsername);
 
         if (existingUser) {
             errors.username = "This username is already taken";
@@ -44,9 +43,9 @@ export default async function signup(prevState: any, payload: FormData) {
         return { success: false, errors };
     }
 
-    const object: typeof users.$inferInsert = {
+    const object = {
         username: normalizedUsername,
-        email: (email as string) || undefined,
+        email: (email as string) || null,
         password: await hashPassword(password as string),
     };
 

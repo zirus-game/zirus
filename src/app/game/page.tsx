@@ -1,6 +1,7 @@
 import { hasTokenOrUnauthorized } from "@/lib/funcs/auth/session";
 import getCurrentGame from "@/lib/funcs/game/getGame";
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
     title: "Game | Zirus",
@@ -17,11 +18,16 @@ export default async function GamePage() {
                 This is where the game will be. It is currently under
                 development.
             </p>
-            <p className="mt-3 text-lg">
+            <p className="mt-3 mb-20 text-lg">
                 {currentGame
                     ? `Current game: ${currentGame.name}`
                     : "No active game found."}
             </p>
+            <span className="mt-20 underline">
+                <Link href="/main">
+                    ← <i>Go Back to Main Page</i>
+                </Link>
+            </span>
         </main>
     );
 }

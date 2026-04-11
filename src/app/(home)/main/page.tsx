@@ -1,13 +1,11 @@
-import logout from "@/actions/auth/logout";
 import db from "@/db";
-import { hasTokenOrUnauthorized } from "@/lib/funcs/auth/session";
 import getCurrentUser from "@/lib/funcs/auth/user";
 import getCurrentGame from "@/lib/funcs/game/getGame";
-import HomeButtons from "@/ui/components/home/buttons";
 import type { Metadata } from "next";
-import ContinueGameForm from "../../../ui/components/game/continue-form";
-import NewGameForm from "../../../ui/components/game/new-form";
-import Link from "next/dist/client/link";
+import ContinueGameForm from "@/ui/components/game/continue-form";
+import NewGameForm from "@/ui/components/game/new-form";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
     title: "Main | Zirus",
@@ -53,6 +51,15 @@ export default async function MainPage() {
                 )}
             </main>
             {hasCurrentGame && <Link href="/game">Continue Last Game</Link>}
+            <br />
+            <form action="/api/logout">
+                <button
+                    type="submit"
+                    className="fixed right-10 bottom-10 mt-10 rounded-xl bg-red-500 p-4 text-xl hover:bg-red-600"
+                >
+                    Logout
+                </button>
+            </form>
         </main>
     );
 }
