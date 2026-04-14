@@ -1,5 +1,6 @@
 import { hasTokenOrUnauthorized } from "@/lib/funcs/auth/session";
 import getCurrentGame from "@/lib/funcs/game/getGame";
+import { File, Folder } from "@/ui/components/game/file-folder";
 import type { Metadata } from "next";
 import Image from "next/image";
 
@@ -8,9 +9,18 @@ export const metadata: Metadata = {
     description: "Continue your last game or start a new one.",
 };
 
+const exampleFolders = ["Saves", "Characters", "Maps", "Dialogue"];
+const exampleFiles = [
+    "readme.txt",
+    "quest-log.json",
+    "inventory.csv",
+    "world-seed.dat",
+];
+
 export default async function GamePage() {
     await hasTokenOrUnauthorized();
     const currentGame = await getCurrentGame();
+
     return (
         <main className="flex h-full flex-col">
             <section className="flex flex-1/10 border border-white">
@@ -40,8 +50,29 @@ export default async function GamePage() {
                 </section>
             </section>
             <section className="flex flex-4/5 border-x border-b border-white">
-                <main className="flex-1 border-r border-r-white"></main>
-                <section className="shrink-0 basis-1/5"></section>
+                <section className="flex flex-1 flex-col border-r border-r-white p-8">
+                    <section className="flex flex-1 flex-wrap content-start overflow-y-auto rounded-4xl">
+                        {exampleFolders.map((folderName) => (
+                            <Folder key={folderName} name={folderName} />
+                        ))}
+                        {exampleFiles.map((fileName) => (
+                            <File key={fileName} name={fileName} />
+                        ))}
+                    </section>
+                    <footer>
+                        <p className="text-sm text-gray-500 capitalize">
+                            Current Directory: C:/
+                        </p>
+                    </footer>
+                </section>
+                <section className="flex shrink-0 basis-1/5 flex-col justify-between p-6">
+                    <div>
+                        <h2 className="mb-4">Status</h2>
+                    </div>
+                    <p className="text-sm tracking-[0.3em] text-gray-500 uppercase">
+                        Preview Only
+                    </p>
+                </section>
             </section>
         </main>
     );
