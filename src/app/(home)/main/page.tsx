@@ -4,8 +4,8 @@ import getCurrentGame from "@/lib/funcs/game/getGame";
 import type { Metadata } from "next";
 import ContinueGameForm from "@/ui/components/game/continue-form";
 import NewGameForm from "@/ui/components/game/new-form";
+import LogoutButton from "@/ui/components/auth/logout-button";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
     title: "Main | Zirus",
@@ -51,15 +51,9 @@ export default async function MainPage() {
                 )}
             </main>
             {hasCurrentGame && <Link href="/game">Continue Last Game</Link>}
-            <br />
-            <form action="/api/logout">
-                <button
-                    type="submit"
-                    className="fixed right-10 bottom-10 mt-10 rounded-xl bg-red-500 p-4 text-xl hover:bg-red-600"
-                >
-                    Logout
-                </button>
-            </form>
+            <div className="mt-10 flex justify-center">
+                <LogoutButton className="fixed right-10 bottom-10" />
+            </div>
         </main>
     );
 }
