@@ -19,7 +19,7 @@ export default function UnauthorizedPage() {
                 <br />
                 or
                 <br />
-                <Link href="/auth">Log In / Sign Up</Link>
+                <Link href="/login">Log In</Link> / <Link href="/signup">Sign Up</Link>
             </main>
         </main>
     );
