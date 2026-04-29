@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { APP_VERSION } from "@/lib/constants";
 
 export default function NavBar({
     isLoggedIn,
@@ -11,7 +12,7 @@ export default function NavBar({
     hasCurrentGame: boolean;
 }) {
     return (
-        <nav className="flex w-full flex-col items-center gap-4 rounded-4xl bg-gray-900/90 p-5 text-center md:min-h-[calc(100vh-5rem)] md:w-40">
+        <nav className="flex w-full flex-col items-center gap-4 rounded-4xl bg-gray-900/90 p-5 text-center md:min-h-[calc(100vh-5rem)] md:w-45">
             <Image
                 src="/vercel.svg" // TODO: Replace with actual logo
                 alt="Logo"
@@ -50,7 +51,7 @@ export default function NavBar({
                 </li>
             </ul>
             <span className="flex items-center gap-4">
-                <i>Zirus v1.0.0</i>
+                <i>Zirus v{APP_VERSION}</i>
                 <Link
                     href="https://github.com/zirus-game/zirus"
                     target="_blank"

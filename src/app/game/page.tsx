@@ -3,24 +3,21 @@ import getCurrentGame from "@/lib/funcs/game/getGame";
 import { File, Folder } from "@/ui/components/game/file-folder";
 import type { Metadata } from "next";
 import Image from "next/image";
+import { exampleFiles, exampleFolders } from "@/lib/constants";
 
 export const metadata: Metadata = {
     title: "Game | Zirus",
     description: "Continue your last game or start a new one.",
 };
 
-const exampleFolders = ["Saves", "Characters", "Maps", "Dialogue"];
-const exampleFiles = [
-    "readme.txt",
-    "quest-log.json",
-    "inventory.csv",
-    "world-seed.dat",
-];
-
-export default async function GamePage() {
-    await hasTokenOrUnauthorized();
-    const currentGame = await getCurrentGame();
-
+export default async function GamePage({
+    searchParams,
+}: {
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+    let { dir } = await searchParams;
+    if (typeof dir !== "string") dir = "C:\\";
+    else dir = dir.toLowerCase();
     return (
         <main className="flex h-full flex-col">
             <section className="flex flex-1/10 border border-white">
@@ -36,12 +33,14 @@ export default async function GamePage() {
                             alt="settings icon"
                             width={100}
                             height={100}
+                            loading="eager"
                         />
                         <Image
                             src={"/save.png"}
                             alt="save icon"
                             width={100}
                             height={100}
+                            loading="eager"
                         />
                     </div>
                     <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gray-400 text-center text-black">
@@ -60,12 +59,12 @@ export default async function GamePage() {
                         ))}
                     </section>
                     <footer>
-                        <p className="text-sm text-gray-500 capitalize">
-                            Current Directory: C:/
+                        <p className="text-sm text-gray-500">
+                            Current Directory: {dir}
                         </p>
                     </footer>
                 </section>
-                <section className="flex shrink-0 basis-1/5 flex-col justify-between p-6">
+                <section className="flex min-w-56 shrink-0 basis-1/5 flex-col justify-between p-6">
                     <div>
                         <h2 className="mb-4">Status</h2>
                     </div>
